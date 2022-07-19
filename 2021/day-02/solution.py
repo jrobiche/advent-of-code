@@ -5,7 +5,9 @@ from collections import namedtuple
 Command = namedtuple("Command", ["direction", "units"])
 
 
-def parse_file_lines(file_lines):
+def parse_file(input_file):
+    with open(input_file, encoding="utf-8") as fp:
+        file_lines = [line.strip() for line in fp.readlines()]
     commands = []
     for line in file_lines:
         direction, units = line.split(" ")
@@ -46,26 +48,19 @@ def perform_command_2(command, position):
     return
 
 
-def main():
-    # input_file = "test_input.txt"
-    input_file = "input.txt"
-
-    with open(input_file, encoding="utf-8") as fp:
-        file_lines = [line.strip() for line in fp.readlines()]
-
-    commands = parse_file_lines(file_lines)
-
-    print("=== Part 1 ===")
+def solution_1(input_file):
+    commands = parse_file(input_file)
     position = {
         "horizontal": 0,
         "depth": 0,
     }
     for command in commands:
         perform_command(command, position)
-    solution_1 = position["horizontal"] * position["depth"]
-    print(f"Product of horizontal position and depth: {solution_1}")
+    return position["horizontal"] * position["depth"]
 
-    print("=== Part 2 ===")
+
+def solution_2(input_file):
+    commands = parse_file(input_file)
     position = {
         "horizontal": 0,
         "depth": 0,
@@ -73,9 +68,4 @@ def main():
     }
     for command in commands:
         perform_command_2(command, position)
-    solution_2 = position["horizontal"] * position["depth"]
-    print(f"Product of horizontal position and depth: {solution_2}")
-
-
-if __name__ == "__main__":
-    main()
+    return position["horizontal"] * position["depth"]
