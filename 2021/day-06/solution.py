@@ -16,10 +16,14 @@ def pass_day(fish_list):
     return
 
 
-def solution_1(input_file, days):
+def solution_1(input_file):
     fish = parse_file(input_file)
-
+    days = 80
     for i in range(days):
         pass_day(fish)
 
     return len(fish)
+
+
+def solution_2(input_file):
+    return
