@@ -28,8 +28,7 @@ def get_gamma_rate(report=None, epsilon_rate=None):
     rate_value = 0
     rate_length = len(report[0])
     for bit_position in range(rate_length):
-        most_common_value = most_common_value_in_bit_position(
-            report, bit_position)
+        most_common_value = most_common_value_in_bit_position(report, bit_position)
         rate_value <<= 1
         if most_common_value == "1":
             rate_value += 1
@@ -42,8 +41,7 @@ def get_epsilon_rate(report=None, gamma_rate=None):
     rate_value = 0
     rate_length = len(report[0])
     for bit_position in range(rate_length):
-        most_common_value = most_common_value_in_bit_position(
-            report, bit_position)
+        most_common_value = most_common_value_in_bit_position(report, bit_position)
         rate_value <<= 1
         if most_common_value == "0":
             rate_value += 1
@@ -64,7 +62,8 @@ def get_oxygen_generator_rating(report):
     rate_length = len(report[0])
     for bit_position in range(0, rate_length):
         most_common_value = most_common_value_in_bit_position(
-            report_entries, bit_position)
+            report_entries, bit_position
+        )
         report_entries = list(filter(bit_criteria, report_entries))
         if len(report_entries) == 1:
             rate_value = int(report_entries[0], base=2)
@@ -82,7 +81,8 @@ def get_co2_scrubber_rating(report):
     rate_length = len(report[0])
     for bit_position in range(0, rate_length):
         most_common_value = most_common_value_in_bit_position(
-            report_entries, bit_position)
+            report_entries, bit_position
+        )
         report_entries = list(filter(bit_criteria, report_entries))
         if len(report_entries) == 1:
             rate_value = int(report_entries[0], base=2)
@@ -94,26 +94,21 @@ def get_life_support_rating(oxygen_generator_rating, co2_scrubber_rating):
     return oxygen_generator_rating.value * co2_scrubber_rating.value
 
 
-def main():
-    # input_file = "test_input.txt"
-    input_file = "input.txt"
-
+def parse_file(input_file):
     with open(input_file, encoding="utf-8") as fp:
         report = [line.strip() for line in fp.readlines()]
+    return report
 
-    print("=== Part 1 ===")
+
+def solution_1(input_file):
+    report = parse_file(input_file)
     gamma_rate = get_gamma_rate(report=report)
     epsilon_rate = get_epsilon_rate(gamma_rate=gamma_rate)
-    power_consumption = get_power_consumption(gamma_rate, epsilon_rate)
-    print(f"Power consumption: {power_consumption}")
+    return get_power_consumption(gamma_rate, epsilon_rate)
 
-    print("=== Part 2 ===")
+
+def solution_2(input_file):
+    report = parse_file(input_file)
     oxygen_generator_rating = get_oxygen_generator_rating(report)
     co2_scrubber_rating = get_co2_scrubber_rating(report)
-    life_support_rating = get_life_support_rating(oxygen_generator_rating,
-                                                  co2_scrubber_rating)
-    print(f"Life support rating: {life_support_rating}")
-
-
-if __name__ == "__main__":
-    main()
+    return get_life_support_rating(oxygen_generator_rating, co2_scrubber_rating)
